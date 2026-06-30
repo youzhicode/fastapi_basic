@@ -4,18 +4,14 @@ from app.core.dependencies import get_current_user
 from app.core.security import create_access_token
 from app.schemas.auth import LoginReq
 from app.utils.reponse import success
+from app.db.session import get_db
+from app.service.admin_service import AdminService
 
 router = APIRouter()
 
 @router.post("/login")
-def login(req: LoginReq):
-    """
-    JSON方式登录获取token，请求体为json
-    """
-    # 模拟用户校验，后续替换数据库查询逻辑
-    mock_user_id = "10001"
-    access_token_expires = timedelta(minutes=60)
-    access_token = create_access_token(subject=mock_user_id, expires_delta=access_token_expires)
+def login(req: LoginReq, db: Session = Depends(get_db)):
+    access_token = AdminService.login(db, req.username, req.password)
     return success(data={"access_token": access_token, "token_type": "bearer"})
 
 

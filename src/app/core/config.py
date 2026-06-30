@@ -17,6 +17,8 @@ class Setting(BaseSettings):
     DB_PASSWORD: str = ""
     DB_NAME: str = ""
     DB_ECHO: bool = False
+
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     
 
 

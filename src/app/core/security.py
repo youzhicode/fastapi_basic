@@ -1,11 +1,8 @@
 from datetime import datetime, timedelta, UTC
 from typing import Any, Optional
 from jose import jwt
-from passlib.context import CryptContext
+import bcrypt
 from app.core.config import settings
-
-# 密码加密
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def create_access_token(subject: Any, expires_delta: Optional[timedelta] = None) -> str:
@@ -22,9 +19,16 @@ def create_access_token(subject: Any, expires_delta: Optional[timedelta] = None)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """校验明文密码与哈希密码"""
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        plain_bytes = plain_password.encode("utf-8")
+        hash_bytes = hashed_password.encode("utf-8")
+        return bcrypt.checkpw(plain_bytes, hash_bytes)
+    except Exception:
+        return False
 
 
 def get_password_hash(password: str) -> str:
     """密码哈希加密"""
-    return pwd_context.hash(password)
+    pwd_bytes = password.encode("utf-8")
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(pwd_bytes, salt).decode("utf-8")

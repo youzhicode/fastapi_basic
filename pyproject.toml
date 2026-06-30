@@ -6,8 +6,19 @@ authors = [
     {name = "Your Name",email = "you@example.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.14,<4.0"
 dependencies = [
+    "fastapi (>=0.138.2,<0.139.0)",
+    "uvicorn[standard] (>=0.49.0,<0.50.0)",
+    "pydantic-settings (>=2.14.2,<3.0.0)",
+    "python-multipart (>=0.0.32,<0.0.33)",
+    "python-dotenv (>=1.2.2,<2.0.0)",
+    "sqlalchemy (>=2.0.51,<3.0.0)",
+    "alembic (>=1.18.5,<2.0.0)",
+    "cryptography (>=49.0.0,<50.0.0)",
+    "python-jose[cryptography] (>=3.5.0,<4.0.0)",
+    "passlib[bcrypt] (>=1.7.4,<2.0.0)",
+    "loguru (>=0.7.3,<0.8.0)"
 ]
 
 [tool.poetry]

@@ -11,5 +11,13 @@ class Setting(BaseSettings):
 
     SECRET_KEY: str = "aB3dEf9GHiJkLmNoPqRsTuVwXyZ1234"
 
+    DB_HOST: str = ""
+    DB_PORT: str = ""
+    DB_USER: str = ""
+    DB_PASSWORD: str = ""
+    DB_NAME: str = ""
+    DB_ECHO: bool = False
+    
+
 
 settings = Setting()

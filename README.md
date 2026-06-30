@@ -50,4 +50,14 @@ fastapi_basic/
     cp .env.example .env
 
     poetry run uvicorn app.main:app --reload --app-dir src --host 0.0.0.0 --port 8000
+```
 
+### 2. 创建migration
+
+```bash
+创建好model模型之后
+详细用户，请参考sqlalchemy的数据迁移
+在命令行下执行：
+poetry run alembic revision --autogenerate -m "create 数据表名 table"
+poetry run alembic upgrade head 执行数据迁移
+```

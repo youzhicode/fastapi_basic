@@ -7,14 +7,6 @@ from jose import jwt, JWTError
 from app.utils.logger import log
 from app.core.config import settings
 
-# 无需Token校验的白名单路径
-AUTH_WHITE_LIST = [
-    "/",
-    "/api/v1/auth/login",
-    "/docs",
-    "/redoc",
-    "/openapi.json",
-]
 
 class RequestLogMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: Callable):
@@ -38,11 +30,21 @@ class RequestLogMiddleware(BaseHTTPMiddleware):
 
 # 全局Token鉴权拦截中间件
 class AuthMiddleware(BaseHTTPMiddleware):
+
+    # 无需Token校验的白名单路径
+    AUTH_WHITE_LIST = [
+        "/",
+        "/api/v1/auth/login",
+        "/docs",
+        "/redoc",
+        "/openapi.json",
+    ]
+
     async def dispatch(self, request: Request, call_next: Callable):
         path = request.url.path
 
         # 白名单直接放行，跳过token校验
-        if path in AUTH_WHITE_LIST:
+        if path in self.AUTH_WHITE_LIST:
             return await call_next(request)
 
         auth_header = request.headers.get("Authorization")

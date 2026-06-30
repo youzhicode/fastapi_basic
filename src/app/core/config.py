@@ -9,5 +9,7 @@ class Setting(BaseSettings):
     APP_PORT: int = 8000
     APP_VERSION: str = "0.1.0"
 
+    SECRET_KEY: str = "aB3dEf9GHiJkLmNoPqRsTuVwXyZ1234"
+
 
 settings = Setting()

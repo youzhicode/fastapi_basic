@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.exceptions import GlobalExceptionMiddleware
+from app.core.middleware import RequestLogMiddleware, AuthMiddleware
 from app.core.config import settings
 from app.api import api_v1
 
@@ -21,9 +22,12 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # 全局鉴权拦截
+    app.add_middleware(AuthMiddleware)
+    # 记录请求日志中间件
+    app.add_middleware(RequestLogMiddleware)
     # 全局异常捕获中间件
     app.add_middleware(GlobalExceptionMiddleware)
-
     app.include_router(api_v1, prefix="/api/v1")
 
         # 根路径健康检查

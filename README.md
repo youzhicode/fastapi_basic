@@ -22,8 +22,8 @@ fastapi_basic/
 ├── .gitignore # git 忽略文件
 └── README.md # 项目说明文档
 
-
 ## 技术栈
+
 - Python 3.14
 - Web框架：FastAPI
 - ASGI服务：Uvicorn
@@ -37,14 +37,17 @@ fastapi_basic/
 - 单元测试：pytest
 
 ## 环境安装
+
 ### 1. 初始化虚拟环境
+
 ```bash
-# 创建对应Python版本虚拟环境
-poetry env use python3.14
-# 安装全部依赖
-poetry install
+    创建对应Python版本虚拟环境
+    poetry env use python3.14
 
-cp .env.example .env
+    安装全部依赖
+    poetry install
 
-## 项目启动
-poetry run uvicorn app.main:app --reload --app-dir src --host 0.0.0.0 --port 8000
+    cp .env.example .env
+
+    poetry run uvicorn app.main:app --reload --app-dir src --host 0.0.0.0 --port 8000
+

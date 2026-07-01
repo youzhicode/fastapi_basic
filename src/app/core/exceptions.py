@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.utils.logger import log
 from app.utils.reponse import fail
+from typing import Optional, Any
 
 
 class GlobalExceptionMiddleware(BaseHTTPMiddleware):
@@ -29,3 +30,19 @@ async def validation_exception_handler(request, exc: RequestValidationError):
         status_code=422,
         content=fail(code=422, msg="请求参数错误，请检查必填字段").model_dump()
     )
+
+
+class AppException(Exception):
+    """应用基础异常"""
+    def __init__(self, code: int = 500, message: str = "系统异常"):
+        self.code = code
+        self.message = message
+        super.__init__(message)
+
+
+class QueryException(AppException):
+    """
+    通用查询异常
+    """
+    def __init__(self, code = 500, message = "通用查询异常"):
+        super().__init__(code, message)

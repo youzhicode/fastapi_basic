@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.exceptions import GlobalExceptionMiddleware
+from fastapi.exceptions import RequestValidationError
+from app.core.exceptions import GlobalExceptionMiddleware,validation_exception_handler
 from app.core.middleware import RequestLogMiddleware, AuthMiddleware
 from app.core.config import settings
 from app.api import api_v1
@@ -21,6 +22,8 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    app.add_exception_handler(RequestValidationError, validation_exception_handler)
 
     # 全局鉴权拦截
     app.add_middleware(AuthMiddleware)

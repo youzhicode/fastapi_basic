@@ -1,4 +1,5 @@
 from fastapi import Request, HTTPException
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.utils.logger import log
@@ -21,3 +22,10 @@ class GlobalExceptionMiddleware(BaseHTTPMiddleware):
             return JSONResponse(
                 content=fail(code=500, msg="服务器内部错误").model_dump()
             )
+        
+async def validation_exception_handler(request, exc: RequestValidationError):
+    log.warning(f"参数验证失败: {exc.errors()}")
+    return JSONResponse(
+        status_code=422,
+        content=fail(code=422, msg="请求参数错误，请检查必填字段").model_dump()
+    )

@@ -36,9 +36,8 @@ class QueryService:
         log.info(f"查询视图: {view_id}, 版本: {version}, SQL: {query}, 参数: {params}")
         
         # 获取真实参数
-        real_param = params.get("data", {}) if params else {}
+        real_param = params.data if params else {}
         
-        # 使用 re.sub 回调展开占位符
         values = {}
         processed_keys = set()
         

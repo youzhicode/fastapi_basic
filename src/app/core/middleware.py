@@ -4,12 +4,15 @@ from fastapi import Request
 from fastapi import Request, HTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from jose import jwt, JWTError
-from app.utils.logger import log
+from app.utils.logger import log,trace_id_ctx
 from app.core.config import settings
+import uuid
 
 
 class RequestLogMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: Callable):
+        trace_id = str(uuid.uuid4())
+        token = trace_id_ctx.set(trace_id)  # 设置当前请求的trace_id
         start_time = time.time()
         # 请求信息
         method = request.method
@@ -25,6 +28,7 @@ class RequestLogMiddleware(BaseHTTPMiddleware):
         status_code = response.status_code
 
         log.info(f"请求完成 | Status:{status_code} | 耗时:{cost_ms}ms | {method} {url}")
+        trace_id_ctx.reset(token)  # 清理当前请求的trace_id
         return response
 
 

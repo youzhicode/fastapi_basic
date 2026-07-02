@@ -24,7 +24,6 @@ def create_app() -> FastAPI:
     )
 
     app.add_exception_handler(RequestValidationError, validation_exception_handler)
-
     # 全局鉴权拦截
     app.add_middleware(AuthMiddleware)
     # 记录请求日志中间件

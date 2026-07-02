@@ -1,7 +1,11 @@
 import sys
 from pathlib import Path
 from loguru import logger
+from contextvars import ContextVar
 from app.core.config import settings
+
+# 请求协程上下文存储 trace_id
+trace_id_ctx: ContextVar[str | None] = ContextVar("trace_id", default=None)
 
 # 日志根目录
 LOG_ROOT = Path("logs")
@@ -10,6 +14,7 @@ LOG_ROOT.mkdir(exist_ok=True)
 # 日志格式
 LOG_FORMAT = (
     "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> "
+    "<blue>trace={extra[trace_id]}</blue> "
     "<level>{level: <8}</level> "
     "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
     "<level>{message}</level>"
@@ -49,4 +54,9 @@ logger.add(
 )
 
 # 对外导出日志对象
-log = logger
+log = logger.patch(lambda record: record["extra"].update({"trace_id":get_trace_id()}))
+
+
+def get_trace_id() -> str:
+    """获取当前请求的trace_id"""
+    return trace_id_ctx.get() or "-"

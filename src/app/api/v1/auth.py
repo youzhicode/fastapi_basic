@@ -1,10 +1,8 @@
-from datetime import timedelta
 from fastapi import APIRouter, Depends, Request
-from app.core.dependencies import get_current_user
-from app.core.security import create_access_token
 from app.schemas.auth import LoginReq
 from app.utils.reponse import success
 from app.db.session import get_db
+from sqlalchemy.orm import Session
 from app.service.admin_service import AdminService
 
 router = APIRouter()
